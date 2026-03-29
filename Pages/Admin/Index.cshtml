@@ -1,0 +1,6 @@
+﻿@page
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+@model BladderRiskApp.Pages.Admin.IndexModel
+
+<h1>Admin Area</h1>
+<p>If you can see this, you are Admin.</p>

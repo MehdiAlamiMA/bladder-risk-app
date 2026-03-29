@@ -1,0 +1,373 @@
+﻿@page
+@model BladderRiskApp.Pages.CheckModel
+
+@functions {
+
+    public string GetRiskClass(int score)
+    {
+        if (score >= 7)
+            return "risk-high";
+
+        if (score >= 4)
+            return "risk-medium";
+
+        return "risk-low";
+    }
+
+}
+
+@functions {
+
+    public string GetSectionClass(int score)
+    {
+        if (score >= 5)
+            return "risk-high";
+
+        if (score >= 2)
+            return "risk-medium";
+
+        return "risk-low";
+    }
+
+}
+
+<h1>Risk Check</h1>
+
+<div class="row">
+
+    <!-- LEFT SIDE: Form -->
+    <div class="col-md-8">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <form method="post" id="riskForm">
+                
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="risk-section">
+
+                <h3>Personal Risk</h3>
+
+                <label>Age:</label>
+                <select asp-for="Age" class="form-control">
+                    <option value="0">Select age</option>
+                    <option value="1">Under 50</option>
+                    <option value="2">50-60</option>
+                    <option value="3">Over 60</option>
+                </select>
+
+                <span asp-validation-for="Age" class="text-danger"></span>
+                <br />
+
+                <label>Gender:</label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <span asp-validation-for="Gender" class="text-danger"></span>
+
+                <br />
+
+                <label>
+                    <input type="checkbox" asp-for="HasFamilyHistory" />
+                    Family history of bladder cancer
+                </label>
+
+            </div>
+
+            <div class="risk-section">
+
+                <h3>Smoking Risk</h3>
+
+                <label>
+                    <input type="checkbox" asp-for="IsSmoker" />
+                    Smoker
+                </label>
+
+                <br />
+
+                <label>Smoking status:</label>
+                <select asp-for="SmokingStatus" class="form-control" >
+                    <option value="0">Select status</option>
+                    <option value="1">Never smoker</option>
+                    <option value="2">Former smoker</option>
+                    <option value="3">Current smoker</option>
+                </select>
+
+                <span asp-validation-for="SmokingStatus" class="text-danger"></span>
+
+                <!-- Years smoked -->
+
+                <label>Years smoked:</label>
+                <input asp-for="YearsSmoked"
+                       type="number"
+                       class="form-control"
+                       min="0" />
+
+                <br />
+
+                <!-- Smoking type -->
+
+                <label>Smoking type:</label>
+                <select asp-for="SmokingType"
+                        class="form-control">
+
+                    <option value="">Select type</option>
+                    <option value="Cigarettes">Cigarettes</option>
+                    <option value="Cigar">Cigar</option>
+                    <option value="Pipe">Pipe</option>
+                    <option value="Other">Other</option>
+
+                </select>
+
+                <br />
+
+                <!-- Cigarettes per day -->
+
+                <label>Cigarettes per day:</label>
+                <input asp-for="CigarettesPerDay"
+                       type="number"
+                       class="form-control"
+                       min="0"/>
+
+                <br />
+
+                <!-- Years since quit -->
+
+                <label>Years since quit:</label>
+                <input asp-for="YearsSinceQuit"
+                       type="number"
+                       class="form-control"
+                       min="0"/>
+
+                <br />
+
+                <label>
+                    <input type="checkbox" asp-for="ExposedToSecondhandSmoke"/>
+                    Exposed to secondhand smoke
+                </label>
+
+            </div>
+
+            <div class="risk-section">
+
+                <h3>Occupational Risk</h3>
+
+                <label>
+                    <input type="checkbox" asp-for="WorksWithChemicals"/>
+                    Works with chemicals
+                </label>
+
+            </div>
+
+            <div class="risk-section">
+
+                <h3>Medical Risk</h3>
+
+                <label>
+                    <input type="checkbox" asp-for="HasChronicBladderInflammation"/>
+                    Chronic bladder inflammation
+                </label>
+
+                <br />
+
+                <label>
+                    <input type="checkbox" asp-for="HadPreviousCancer"/>
+                    Previous cancer diagnosis
+                </label>
+
+                <!-- Pelvic radiation -->
+
+                <label>
+                    <input type="checkbox" asp-for="HadPelvicRadiation" />
+                    Radiation in pelvic area
+                </label>
+
+                <br />
+
+                <label>Years since treatment:</label>
+                <select asp-for="YearsSinceRadiation" class="form-control">
+
+                    <option value="0">Select period</option>
+                    <option value="1">&lt; 5 years</option>
+                    <option value="2">5–10 years</option>
+                    <option value="3">&gt; 10 years</option>
+
+                </select>
+
+                <br /><br />
+
+                <!-- Cyclophosphamide chemotherapy -->
+
+                <label>
+                    <input type="checkbox" asp-for="HadCyclophosphamide" />
+                    Cyclophosphamide chemotherapy
+                </label>
+
+                <br />
+
+                <label>
+                    <input type="checkbox" asp-for="IsLongTermTherapy" />
+                    Long-term therapy
+                </label>
+
+                <br />
+
+                <label>Therapy duration in years:</label>
+                <select asp-for="TherapyDurationYears" class="form-control">
+
+                    <option value="0">Select duration</option>
+                    <option value="1">&lt; 1 year</option>
+                    <option value="2">1–5 years</option>
+                    <option value="3">&gt; 5 years</option>
+
+                </select>
+
+            </div>
+
+            <!-- Save button -->
+            <button type="submit" asp-page-handler="Save" class="btn btn-primary" id="saveButton">
+                Save
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- RIGHT SIDE: Risk Panel -->
+    <div class="col-md-4" id="right-sidebar">
+
+        <div class="card p-3" style="position: sticky; top: 20px;">
+
+            <h5>Total Risk</h5>
+
+            <hr />
+
+            <!-- Total Risk Box -->
+            <div class="risk-box @GetRiskClass(Model.Score)">
+
+                <div class="risk-score">
+                    @Model.Score
+                </div>
+
+            </div>
+
+            <!-- Risk Level -->
+            <p class="mb-3">
+                <strong>Risk Level:</strong>
+
+                @if (Model.Score >= 7)
+                {
+                    <span class="text-danger fw-bold">High</span>
+                }
+                else if (Model.Score >= 4)
+                {
+                    <span class="text-warning fw-bold">Medium</span>
+                }
+                else
+                {
+                    <span class="text-success fw-bold">Low</span>
+                }
+
+            </p>
+
+            <hr />
+
+            <!-- Section Indicators -->
+
+            <div class="risk-legend">
+
+                <div class="risk-item">
+                    <span class="risk-color @GetSectionClass(Model.PersonalScore)"></span>
+                    Personal Risk
+                    <span class="ms-auto fw-bold">
+                        @Model.PersonalScore
+                    </span>
+                </div>
+
+                <div class="risk-item">
+                    <span class="risk-color @GetSectionClass(Model.SmokingScore)"></span>
+                    Smoking Risk
+                    <span class="ms-auto fw-bold">
+                        @Model.SmokingScore
+                    </span>
+                </div>
+
+                <div class="risk-item">
+                    <span class="risk-color @GetSectionClass(Model.OccupationalScore)"></span>
+                    Occupational Risk
+                    <span class="ms-auto fw-bold">
+                        @Model.OccupationalScore
+                    </span>
+                </div>
+
+                <div class="risk-item">
+                    <span class="risk-color @GetSectionClass(Model.MedicalScore)"></span>
+                    Medical Risk
+                    <span class="ms-auto fw-bold">
+                        @Model.MedicalScore
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Disable Save button if form is invalid
+        document.querySelector("form").addEventListener("input", function () {
+            const form = this;
+            const button = document.getElementById("saveButton");
+
+            if (form.checkValidity()) {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll(
+            "#riskForm select, #riskForm input"
+        ).forEach(function (element) {
+
+            element.addEventListener("change", function () {
+
+                const form = document.getElementById("riskForm");
+
+                fetch("", {
+                    method: "POST",
+                    body: new FormData(form)
+                })
+                .then(response => response.text())
+                .then(html => {
+
+                    // Replace only the sidebar
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+
+                    const newSidebar =
+                        doc.querySelector(".card");
+
+                    document.querySelector(".card")
+                        .innerHTML = newSidebar.innerHTML;
+                });
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,46 @@
+﻿@page
+@model BladderRiskApp.Pages.HistoryModel
+
+<h2>My Risk Check History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Personal</th> 
+            <th>Smoking</th>
+            <th>Occupational</th>
+            <th>Medical</th>
+            <th>Risk</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RiskChecks)
+        {
+            <tr>
+                <td>@item.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.TotalScore</td>
+                <td>@item.PersonalScore</td>
+                <td>@item.SmokingScore</td>
+                <td>@item.OccupationalScore</td>
+                <td>@item.MedicalScore</td>
+                <td>
+                    @if (item.RiskLevel == "Low")
+                    {
+                        <span class="text-success fw-bold">Low</span>
+                    }
+                    else if (item.RiskLevel == "Medium")
+                    {
+                        <span class="text-warning fw-bold">Medium</span>
+                    }
+                    else if (item.RiskLevel == "High")
+                    {
+                        <span class="text-danger fw-bold">High</span>
+                    }
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
