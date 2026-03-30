@@ -20,17 +20,23 @@ They are examples created for learning and demonstration purposes only.
 
 ## Screenshots
 
+### Home
+
+![Home](screenshots/01-home.png)
+
 ### Risk Check
 
-![Check](screenshots/check.png)
+![Check](screenshots/02-risk-form.png)
+
+### High Risk Check
+
+![Highrheck](screenshots/03-high-risk.png)
 
 ### History
 
-![History](screenshots/history.png)
+![History](screenshots/04-history.png)
 
-### Home
 
-![Home](screenshots/home.png)
 
 ## How to run
 
